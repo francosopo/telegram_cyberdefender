@@ -1,11 +1,9 @@
 package org.config;
 
 import java.io.FileInputStream;
-import java.io.ObjectInputFilter;
 import java.util.Properties;
 
 public class ConfigService {
-    private Properties props;
 
     private static ConfigService configService = null;
     private static Properties prop;
@@ -17,7 +15,7 @@ public class ConfigService {
             prop = new Properties();
             prop.load(propsInput);
         } catch (Exception e) {
-            System.out.println("Error: " + e.toString());
+            System.out.println("Error: " + e);
         }
 
     }

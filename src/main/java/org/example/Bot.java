@@ -1,22 +1,27 @@
 package org.example;
-
+import org.commands.interfaces.IFactory;
 import org.config.ConfigService;
-import org.http.MyHttpClient;
+import org.example.interfaces.IBot;
+import org.message_manager.MessageManager;
+import org.message_manager.interfaces.IMessageManager;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.util.HashMap;
+import java.net.http.HttpClient;
 
-public class Bot extends TelegramLongPollingBot {
-    private MyHttpClient httpClient;
+public class Bot extends TelegramLongPollingBot implements IBot {
     private ConfigService configService;
+    private IMessageManager messageManager;
+
+    private IFactory commandsFactory;
 
     Bot()
     {
-        this.httpClient = new MyHttpClient();
         this.configService = ConfigService.getConfigService();
+        this.messageManager = new MessageManager();
+
     }
 
     @Override
@@ -32,19 +37,7 @@ public class Bot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         var msg = update.getMessage();
-        var user = msg.getFrom();
-        var id = user.getId();
-        System.out.println(user.getFirstName() + " wrote " + msg.getText());
-        HashMap<String, String> messageToVerify = new HashMap<String, String>();
-        messageToVerify.put("message", msg.getText());
-
-        boolean response = this.httpClient.post(this.configService.getParameter("URL_FILTER"), messageToVerify);
-        System.out.println("Sending text to analize...");
-
-        if (response)
-        {
-            sendText(id, "Su hijo fue victima de lenguaje ofensivo");
-        }
+        this.messageManager.execute(msg);
     }
 
     public void sendText(Long who, String what)
