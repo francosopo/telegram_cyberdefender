@@ -85,7 +85,6 @@ public class MessageManager implements IMessageManager {
             return;
         }
         System.out.println("Cannot remove, userId does not exist");
-        return;
     }
 
     public ArrayList<Long> getChatList(Long userId)

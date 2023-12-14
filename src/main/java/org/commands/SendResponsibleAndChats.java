@@ -14,12 +14,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SendResponsibleAndChats extends AbstractCommand implements ICommand {
-    private HashMap<Long, String> messages;
 
     public SendResponsibleAndChats()
     {
         super();
-        this.messages = new HashMap<>();
     }
     @Override
     public int executeCommand(Long userId, String msg, IMessageManager msgManager) {

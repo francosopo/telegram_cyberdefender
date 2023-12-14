@@ -1,9 +1,7 @@
 package org.commands;
 
 import org.commands.interfaces.ICommand;
-import org.example.interfaces.IBot;
 import org.message_manager.interfaces.IMessageManager;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 public class NullCommand extends AbstractCommand implements ICommand {
 

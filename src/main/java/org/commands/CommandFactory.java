@@ -2,10 +2,8 @@ package org.commands;
 
 import org.commands.interfaces.ICommand;
 import org.commands.interfaces.IFactory;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class CommandFactory implements IFactory {
 

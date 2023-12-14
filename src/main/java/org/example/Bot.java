@@ -9,13 +9,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.net.http.HttpClient;
 
 public class Bot extends TelegramLongPollingBot implements IBot {
     private ConfigService configService;
     private IMessageManager messageManager;
-
-    private IFactory commandsFactory;
 
     Bot()
     {

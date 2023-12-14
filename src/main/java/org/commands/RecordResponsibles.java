@@ -1,8 +1,6 @@
 package org.commands;
 import org.commands.interfaces.ICommand;
-import org.example.interfaces.IBot;
 import org.message_manager.interfaces.IMessageManager;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.HashMap;
 
 public class RecordResponsibles extends AbstractCommand implements ICommand {

@@ -5,9 +5,6 @@ import org.config.ConfigService;
 import org.example.interfaces.IBot;
 import org.message_manager.interfaces.IMessageManager;
 import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.MessageAutoDeleteTimerChanged;
-
-import java.net.http.HttpClient;
 import java.util.HashMap;
 
 public abstract class AbstractCommand implements ICommand {
