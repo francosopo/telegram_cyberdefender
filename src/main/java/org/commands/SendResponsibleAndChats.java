@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.commands.interfaces.ICommand;
 import org.message_manager.interfaces.IMessageManager;
-import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.io.IOException;
 import java.net.URI;
@@ -14,17 +13,38 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SendResponsibleAndChildren extends AbstractCommand implements ICommand {
+public class SendResponsibleAndChats extends AbstractCommand implements ICommand {
+    private HashMap<Long, String> messages;
+
+    public SendResponsibleAndChats()
+    {
+        super();
+        this.messages = new HashMap<>();
+    }
     @Override
-    public int executeCommand(Message msg, IMessageManager msgManager) {
-        Long userId = msg.getFrom().getId();
+    public int executeCommand(Long userId, String msg, IMessageManager msgManager) {
         ArrayList<Long> responsible = msgManager.getResponsibleList(userId);
-        ArrayList<Long> children = msgManager.getChildrenList(userId);
+        ArrayList<Long> chats = msgManager.getChatList(userId);
+        System.out.println("Sending data");
+
+        if (responsible == null)
+        {
+            System.out.println("Cannot send data, responsibles are null");
+            this.setMessage(userId, "No hay responsables");
+            return -1;
+        }
+
+        if (chats == null)
+        {
+            System.out.println("Cannot send data, chats are null");
+            this.setMessage(userId, "No hay chats registrados");
+            return -1;
+        }
 
         ObjectMapper mapper = new ObjectMapper();
         HashMap<String, ArrayList<Long>> data = new HashMap<>();
         data.put("responsables", responsible);
-        data.put("pupilos", children);
+        data.put("chats", chats);
         try{
             String jsonData = mapper.writeValueAsString(data);
             HttpRequest req = HttpRequest.newBuilder()
@@ -43,18 +63,21 @@ public class SendResponsibleAndChildren extends AbstractCommand implements IComm
             if (statusCode != 200)
             {
                 System.out.println("Could not record");
+                this.setMessage(userId, "No se pudo registrar, intente más tarde");
                 return -1;
             }
             System.out.println("Recorded!");
+            this.setMessage(userId, "Registrados satisfactoriamente");
+            msgManager.clean(userId);
             return 0;
         } catch (JsonProcessingException e) {
-            System.out.println("Could not make JSON object");
+            System.out.println("Could not make JSON object " + e);
             return -2;
         } catch (IOException e) {
-            System.out.println("Could not make request from I/O");
+            System.out.println("Could not make request from I/O "+ e);
             return -3;
         } catch (InterruptedException e) {
-            System.out.println("Could not make request from Network");
+            System.out.println("Could not make request from Network "+ e);
             return -4;
         }
     }

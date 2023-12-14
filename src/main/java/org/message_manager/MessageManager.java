@@ -1,11 +1,11 @@
 package org.message_manager;
 
-import org.checkerframework.checker.units.qual.A;
 import org.commands.CommandFactory;
-import org.commands.RecordChildren;
+import org.commands.RecordChats;
 import org.commands.RecordResponsibles;
-import org.commands.SendResponsibleAndChildren;
+import org.commands.SendResponsibleAndChats;
 import org.commands.interfaces.ICommand;
+import org.example.interfaces.IBot;
 import org.message_manager.interfaces.IMessageManager;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -15,24 +15,34 @@ import java.util.HashMap;
 public class MessageManager implements IMessageManager {
     private final CommandFactory commandsFactory;
     private final HashMap<Long, ArrayList<Long>> responsibles;
-    private final HashMap<Long, ArrayList<Long>> children;
+    private final HashMap<Long, ArrayList<Long>> chats;
     public MessageManager()
     {
         this.commandsFactory = new CommandFactory();
-        this.commandsFactory.addCommand("addParent", new RecordResponsibles());
-        this.commandsFactory.addCommand("addChild", new RecordChildren());
-        this.commandsFactory.addCommand("end", new SendResponsibleAndChildren());
+        this.commandsFactory.addCommand("/agregarresponsable", new RecordResponsibles());
+        this.commandsFactory.addCommand("/agregarpupilo", new RecordChats());
+        this.commandsFactory.addCommand("/end", new SendResponsibleAndChats());
         this.responsibles = new HashMap<>();
-        this.children = new HashMap<>();
+        this.chats = new HashMap<>();
     }
     @Override
-    public void execute(Message msg) {
-        ICommand command = this.commandsFactory.getCommand(msg);
-        command.executeCommand(msg, this);
+    public void execute(Message msg, IBot bot) {
+        System.out.println("Called Message manager");
+        String text = msg.getText();
+        Long id = msg.getFrom().getId();
+        String[] data = text.split(" ");
+        ICommand command = this.commandsFactory.getCommand(data[0]);
+        if (data.length > 1)
+        {
+            command.executeCommand(id,data[1], this);
+        }else{
+            command.executeCommand(id, null, this);
+        }
+        command.sendToUser(msg, bot);
     }
 
     public HashMap<Long, ArrayList<Long>> getChildren() {
-        return children;
+        return chats;
     }
 
     private void addToMap(HashMap<Long, ArrayList<Long>> map, Long key, String value)
@@ -50,7 +60,7 @@ public class MessageManager implements IMessageManager {
 
     public void addChild(Long userId, String child)
     {
-        this.addToMap(this.children,userId, child);
+        this.addToMap(this.chats,userId, child);
     }
 
     private ArrayList<Long> getFromList(HashMap<Long, ArrayList<Long>> map, Long key)
@@ -67,8 +77,19 @@ public class MessageManager implements IMessageManager {
         return this.getFromList(this.responsibles, userId);
     }
 
-    public ArrayList<Long> getChildrenList(Long userId)
+    @Override
+    public void clean(Long userId) {
+        if (this.chats.containsKey(userId) && this.responsibles.containsKey(userId)) {
+            this.chats.remove(userId);
+            this.responsibles.remove(userId);
+            return;
+        }
+        System.out.println("Cannot remove, userId does not exist");
+        return;
+    }
+
+    public ArrayList<Long> getChatList(Long userId)
     {
-        return this.getFromList(this.children, userId);
+        return this.getFromList(this.chats, userId);
     }
 }

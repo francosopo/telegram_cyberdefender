@@ -37,7 +37,8 @@ public class Bot extends TelegramLongPollingBot implements IBot {
     @Override
     public void onUpdateReceived(Update update) {
         var msg = update.getMessage();
-        this.messageManager.execute(msg);
+        System.out.println("Message received");
+        this.messageManager.execute(msg, this);
     }
 
     public void sendText(Long who, String what)

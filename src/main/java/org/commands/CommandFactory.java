@@ -24,12 +24,13 @@ public class CommandFactory implements IFactory {
         }
     }
 
-    public ICommand getCommand(Message msg)
+    public ICommand getCommand(String cmd)
     {
-        if (!this.classes.containsKey(msg.getText()))
-        {
-            return new NullCommand();
-        }
-        return this.classes.get(msg.getText());
+            if (!this.classes.containsKey(cmd))
+            {
+                return new NullCommand();
+            }
+            System.out.println("texto: " + cmd);
+            return this.classes.get(cmd);
     }
 }
