@@ -1,5 +1,4 @@
 package org.example;
-import org.commands.interfaces.IFactory;
 import org.config.ConfigService;
 import org.example.interfaces.IBot;
 import org.message_manager.MessageManager;
@@ -11,8 +10,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 
 public class Bot extends TelegramLongPollingBot implements IBot {
-    private ConfigService configService;
-    private IMessageManager messageManager;
+    private final ConfigService configService;
+    private final IMessageManager messageManager;
 
     Bot()
     {

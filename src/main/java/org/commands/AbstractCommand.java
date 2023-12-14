@@ -8,8 +8,8 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.HashMap;
 
 public abstract class AbstractCommand implements ICommand {
-    private ConfigService configService;
-    private HashMap<Long, String> messages;
+    private final ConfigService configService;
+    private final HashMap<Long, String> messages;
 
     AbstractCommand() {
         this.configService = ConfigService.getConfigService();

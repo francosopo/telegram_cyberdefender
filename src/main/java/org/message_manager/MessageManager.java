@@ -41,10 +41,6 @@ public class MessageManager implements IMessageManager {
         command.sendToUser(msg, bot);
     }
 
-    public HashMap<Long, ArrayList<Long>> getChildren() {
-        return chats;
-    }
-
     private void addToMap(HashMap<Long, ArrayList<Long>> map, Long key, String value)
     {
         if (!map.containsKey(key))
