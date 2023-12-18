@@ -12,8 +12,8 @@ public class RecordChats extends AbstractCommand implements ICommand {
             return -1;
         }
         msgManager.addChild(id, msg);
-        System.out.println("Added child");
-        this.setMessage(id, "Pupilo agregado(a)");
+        System.out.println("Chat added");
+        this.setMessage(id, "Chat agregado(a)");
         return 0;
     }
 

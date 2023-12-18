@@ -20,7 +20,7 @@ public class MessageManager implements IMessageManager {
     {
         this.commandsFactory = new CommandFactory();
         this.commandsFactory.addCommand("/agregarresponsable", new RecordResponsibles());
-        this.commandsFactory.addCommand("/agregarpupilo", new RecordChats());
+        this.commandsFactory.addCommand("/agregarchat", new RecordChats());
         this.commandsFactory.addCommand("/end", new SendResponsibleAndChats());
         this.responsibles = new HashMap<>();
         this.chats = new HashMap<>();
