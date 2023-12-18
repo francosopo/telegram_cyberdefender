@@ -7,7 +7,7 @@ public class NullCommand extends AbstractCommand implements ICommand {
 
     @Override
     public int executeCommand(Long id, String msg, IMessageManager msgManager) {
-        this.setMessage(id, "Comando desconocido, \nPosibles comandos: \n/agregarresponsable <id> agrega un supervisor\n/agregarpupilo <id> agrega un niño(a)\n/end finaliza");
+        this.setMessage(id, "Comando desconocido, \nPosibles comandos: \n/agregarresponsable <id> agrega un supervisor\n/agregarchat <id> agrega un grupo\n/end finaliza");
         return -1;
     }
 }
