@@ -17,6 +17,7 @@ RECORD_RESPONSIBLES_URI=http://the-url-to-record-responsibles.com
 
 Then run
 ```bash
+mvn dependency:resolve 
 mvn clean package
 ```
 
