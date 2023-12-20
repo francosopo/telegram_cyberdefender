@@ -8,7 +8,7 @@ It does not use Command design pattern.
 
 ## Building
 
-Write a config.properties file configuration like this
+Write a config.properties file configuration like this in the src/ folder
 
 ```.env
 BOT_TOKEN=your-secret-bot-token
